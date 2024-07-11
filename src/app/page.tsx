@@ -1,6 +1,9 @@
 "use client";
 import { useState, useEffect } from "react";
 import RangeInput from "./components/atoms/RangeInput";
+import Timer from "./components/molecules/Timer";
+import Button from "./components/atoms/Button";
+import convertMinutes from "./utils/convertMinutes";
 
 export default function Home() {
   const [hours, setHours] = useState(0);
@@ -38,105 +41,65 @@ export default function Home() {
   }, [isActive, hours, minutes, seconds]);
 
   const handleStart = () => {
-    setIsActive(true);
+    setIsActive(!isActive);
   };
 
   const handleStop = () => {
+    setHours(0);
     setMinutes(0);
     setSeconds(0);
     setIsActive(false);
   };
 
   const handleSkip = () => {
+    setHours(0);
     setMinutes(0);
     setSeconds(0);
     setIsActive(false);
   };
 
-  const handleMinutesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleTargetChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value: number = parseInt(e.target.value);
-    const { hours, minutes } = convertMinutesToHoursAndMinutes(value);
+    const { hours, minutes } = convertMinutes(value);
     setHours(hours);
     setMinutes(minutes);
     setTargetMinutes(value);
   };
 
-  const formatTime = (time: number): string => {
-    return time < 10 ? `0${time}` : `${time}`;
-  };
-
-  const convertMinutesToHoursAndMinutes = (
-    totalMinutes: number
-  ): { hours: number; minutes: number } => {
-    const hours = Math.floor(totalMinutes / 60);
-    const minutes = totalMinutes % 60;
-    return { hours, minutes };
-  };
-
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
       <div className="flex flex-col items-center justify-center space-y-4">
-        <h1 className="text-4xl font-bold text-gray-800">Countdown Timer</h1>
-        <div className="flex space-x-4">
-          <div className="flex flex-col items-center">
-            <span className="text-6xl font-bold text-gray-800">
-              {formatTime(hours)}
-            </span>
-            <span className="text-sm text-gray-500">Hours</span>
-          </div>
-          <div className="flex flex-col items-center">
-            <span className="text-6xl font-bold text-gray-800">
-              {formatTime(minutes)}
-            </span>
-            <span className="text-sm text-gray-500">Minutes</span>
-          </div>
-          <div className="flex flex-col items-center">
-            <span className="text-6xl font-bold text-gray-800">
-              {formatTime(seconds)}
-            </span>
-            <span className="text-sm text-gray-500">Seconds</span>
-          </div>
-        </div>
-        <div className="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700 mt-4">
-          <div
-            className="bg-blue-600 h-2.5 rounded-full"
-            style={{ width: "50%" }}
-          ></div>
-        </div>
+        <Timer
+          title="Work Timer"
+          hours={hours}
+          minutes={minutes}
+          seconds={seconds}
+        />
         <div className="flex space-x-4 mt-4">
-          <button
-            className="px-4 py-2 bg-blue-600 text-white rounded"
-            onClick={handleStart}
-          >
-            Start
-          </button>
-          <button
-            className="px-4 py-2 bg-red-600 text-white rounded"
-            onClick={handleStop}
-          >
+          <Button onClick={handleStart} color="blue">
+            {isActive ? "Pause" : "Start"}
+          </Button>
+          <Button onClick={handleStop} color="red">
             Stop
-          </button>
-          <button
-            className="px-4 py-2 bg-yellow-600 text-white rounded"
-            onClick={handleSkip}
-          >
+          </Button>
+          <Button onClick={handleSkip} color="yellow">
             Skip
-          </button>
+          </Button>
         </div>
         <div className="flex flex-col items-center mt-8">
           <h2 className="text-2xl font-bold text-gray-800">Settings</h2>
           <RangeInput
-            id="target-minutes"
-            label="Target Minutes"
+            id="target-time"
+            label="Target Time"
             min={0}
             max={400}
             step={5}
             value={targetMinutes}
-            onChange={handleMinutesChange}
+            onChange={handleTargetChange}
           />
           <RangeInput
-            id="work-minutes"
-            label="Work Minutes"
+            id="work-time"
+            label="Work Time"
             min={0}
             max={60}
             step={5}
@@ -144,8 +107,8 @@ export default function Home() {
             onChange={(e) => setWorkMinutes(parseInt(e.target.value))}
           />
           <RangeInput
-            id="break-minutes"
-            label="Break Minutes"
+            id="break-time"
+            label="Break Time"
             min={0}
             max={60}
             step={5}
