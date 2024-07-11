@@ -1,3 +1,5 @@
+import convertMinutes from "@/app/utils/convertMinutes";
+import { formatTime } from "@/app/utils/formatTime";
 import React from "react";
 
 interface RangeInputProps {
@@ -23,10 +25,12 @@ const RangeInput: React.FC<RangeInputProps> = ({
     onChange(e);
   };
 
+  const { hours, minutes } = convertMinutes(value);
+
   return (
     <div className="flex flex-col items-center mt-4">
       <label className="text-sm text-gray-500" htmlFor={id}>
-        {label} : {value}
+        {label} : {formatTime(hours)}:{formatTime(minutes)}:00
       </label>
       <input
         id={id}
