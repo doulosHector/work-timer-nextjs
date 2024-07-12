@@ -1,4 +1,4 @@
-import convertMinutes from "@/app/utils/convertMinutes";
+import convertMinutes from "@/app/utils/convertMinutesToHours";
 import { formatTime } from "@/app/utils/formatTime";
 import React from "react";
 
