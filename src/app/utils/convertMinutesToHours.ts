@@ -1,4 +1,4 @@
-const convertMinutes = (
+const convertMinutesToHours = (
   totalMinutes: number
 ): { hours: number; minutes: number } => {
   const hours = Math.floor(totalMinutes / 60);
@@ -6,4 +6,4 @@ const convertMinutes = (
   return { hours, minutes };
 };
 
-export default convertMinutes;
+export default convertMinutesToHours;
