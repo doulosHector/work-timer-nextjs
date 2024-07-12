@@ -7,9 +7,11 @@ import ProgressBar from "../atoms/ProgressBar";
 const Timer = ({
   title,
   initialTimeMinutes,
+  setActiveTimer,
 }: {
   title: string;
   initialTimeMinutes: number;
+  setActiveTimer: (timer: "work" | "break") => void;
 }) => {
   const [isRunning, setIsRunning] = useState(false);
   const { hours: initialHours, minutes: initialMinutes } =
@@ -21,6 +23,7 @@ const Timer = ({
 
   const totalInitialTimeSeconds = initialHours * 60 + initialMinutes * 60;
   const totalTimeSeconds = hours * 60 + minutes * 60 + seconds;
+  const btnDisabled = !(hours > 0 || minutes > 0 || seconds > 0);
 
   useEffect(() => {
     setHours(initialHours);
@@ -61,18 +64,12 @@ const Timer = ({
     setIsRunning(!isRunning);
   };
 
-  const handleStop = () => {
+  const stopTimer = () => {
     setIsRunning(false);
     setSeconds(0);
     setMinutes(initialMinutes);
     setHours(initialHours);
-  };
-
-  const handleSkip = () => {
-    setIsRunning(false);
-    setSeconds(0);
-    setMinutes(initialMinutes);
-    setHours(initialHours);
+    setActiveTimer(title === "Work Time" ? "break" : "work");
   };
 
   return (
@@ -85,13 +82,13 @@ const Timer = ({
       </div>
       <ProgressBar progress={progress} />
       <div className="flex space-x-4 mt-4">
-        <Button onClick={handleStart} color="blue">
+        <Button onClick={handleStart} color="blue" disabled={btnDisabled}>
           {isRunning ? "Pause" : "Start"}
         </Button>
-        <Button onClick={handleStop} color="red">
+        <Button onClick={stopTimer} color="red" disabled={btnDisabled}>
           Stop
         </Button>
-        <Button onClick={handleSkip} color="yellow">
+        <Button onClick={stopTimer} color="yellow" disabled={btnDisabled}>
           Skip
         </Button>
       </div>

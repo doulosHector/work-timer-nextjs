@@ -7,12 +7,24 @@ export default function Home() {
   const [targetMinutes, setTargetMinutes] = useState(0);
   const [workMinutes, setWorkMinutes] = useState(0);
   const [breakMinutes, setBreakMinutes] = useState(0);
+  const [activeTimer, setActiveTimer] = useState<"work" | "break">("work");
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
       <div className="flex flex-col items-center justify-center space-y-4">
-        <Timer title="Work Time" initialTimeMinutes={workMinutes} />
-        <Timer title="Break Time" initialTimeMinutes={breakMinutes} />
+        {activeTimer === "work" ? (
+          <Timer
+            title="Work Time"
+            initialTimeMinutes={workMinutes}
+            setActiveTimer={setActiveTimer}
+          />
+        ) : (
+          <Timer
+            title="Break Time"
+            initialTimeMinutes={breakMinutes}
+            setActiveTimer={setActiveTimer}
+          />
+        )}
         <Settings
           targetMinutes={targetMinutes}
           setTargetMinutes={setTargetMinutes}
