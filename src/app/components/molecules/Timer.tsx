@@ -2,6 +2,7 @@ import TimeDigits from "../atoms/TimeDigits";
 import { useState, useEffect } from "react";
 import convertMinutesToHours from "@/app/utils/convertMinutesToHours";
 import Button from "../atoms/Button";
+import ProgressBar from "../atoms/ProgressBar";
 
 const Timer = ({
   title,
@@ -16,11 +17,19 @@ const Timer = ({
   const [hours, setHours] = useState(0);
   const [minutes, setMinutes] = useState(0);
   const [seconds, setSeconds] = useState(0);
+  const [progress, setProgress] = useState(0);
+
+  const totalInitialTimeSeconds = initialHours * 60 + initialMinutes * 60;
+  const totalTimeSeconds = hours * 60 + minutes * 60 + seconds;
 
   useEffect(() => {
     setHours(initialHours);
     setMinutes(initialMinutes);
   }, [initialHours, initialMinutes]);
+
+  useEffect(() => {
+    setProgress(100 - (totalTimeSeconds / totalInitialTimeSeconds) * 100);
+  }, [totalInitialTimeSeconds, totalTimeSeconds]);
 
   useEffect(() => {
     let interval: NodeJS.Timeout | null = null;
@@ -74,12 +83,7 @@ const Timer = ({
         <TimeDigits label="Minutes" time={minutes} />
         <TimeDigits label="Seconds" time={seconds} />
       </div>
-      <div className="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700 mt-4">
-        <div
-          className="bg-blue-600 h-2.5 rounded-full"
-          style={{ width: "50%" }}
-        ></div>
-      </div>
+      <ProgressBar progress={progress} />
       <div className="flex space-x-4 mt-4">
         <Button onClick={handleStart} color="blue">
           {isRunning ? "Pause" : "Start"}
