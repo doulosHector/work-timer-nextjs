@@ -8,12 +8,15 @@ const Timer = ({
   title,
   initialTimeMinutes,
   setActiveTimer,
+  isRunning,
+  setIsRunning,
 }: {
   title: string;
   initialTimeMinutes: number;
   setActiveTimer: (timer: "work" | "break") => void;
+  isRunning: boolean;
+  setIsRunning: (isRunning: boolean) => void;
 }) => {
-  const [isRunning, setIsRunning] = useState(false);
   const { hours: initialHours, minutes: initialMinutes } =
     convertMinutesToHours(initialTimeMinutes);
   const [hours, setHours] = useState(0);

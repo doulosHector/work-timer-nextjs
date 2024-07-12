@@ -8,6 +8,7 @@ export default function Home() {
   const [workMinutes, setWorkMinutes] = useState(0);
   const [breakMinutes, setBreakMinutes] = useState(0);
   const [activeTimer, setActiveTimer] = useState<"work" | "break">("work");
+  const [isRunning, setIsRunning] = useState(false);
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
@@ -17,12 +18,16 @@ export default function Home() {
             title="Work Time"
             initialTimeMinutes={workMinutes}
             setActiveTimer={setActiveTimer}
+            isRunning={isRunning}
+            setIsRunning={setIsRunning}
           />
         ) : (
           <Timer
             title="Break Time"
             initialTimeMinutes={breakMinutes}
             setActiveTimer={setActiveTimer}
+            isRunning={isRunning}
+            setIsRunning={setIsRunning}
           />
         )}
         <Settings
@@ -32,6 +37,7 @@ export default function Home() {
           setWorkMinutes={setWorkMinutes}
           breakMinutes={breakMinutes}
           setBreakMinutes={setBreakMinutes}
+          isRunning={isRunning}
         />
       </div>
     </main>

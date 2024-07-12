@@ -10,6 +10,7 @@ interface RangeInputProps {
   max: number;
   step: number;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  disabled?: boolean;
 }
 
 const RangeInput: React.FC<RangeInputProps> = ({
@@ -20,6 +21,7 @@ const RangeInput: React.FC<RangeInputProps> = ({
   max,
   step,
   onChange,
+  disabled,
 }) => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     onChange(e);
@@ -28,7 +30,7 @@ const RangeInput: React.FC<RangeInputProps> = ({
   const { hours, minutes } = convertMinutes(value);
 
   return (
-    <div className="flex flex-col items-center mt-4">
+    <div className="flex flex-col items-center">
       <label className="text-sm text-gray-500" htmlFor={id}>
         {label} : {formatTime(hours)}:{formatTime(minutes)}:00
       </label>
@@ -41,6 +43,7 @@ const RangeInput: React.FC<RangeInputProps> = ({
         step={step}
         onChange={handleChange}
         className="w-full h-2 mt-2 bg-gray-200 rounded-lg"
+        disabled={disabled}
       />
     </div>
   );
