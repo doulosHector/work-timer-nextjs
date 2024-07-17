@@ -25,9 +25,6 @@ const Timer = ({
     initialTimeSeconds > 0 && secondsLeft > 0
       ? parseFloat((100 - (secondsLeft / initialTimeSeconds) * 100).toFixed(2))
       : 0;
-  const btnDisabled = secondsLeft === 0;
-  console.clear();
-  console.log({ initialTimeSeconds, secondsLeft, progress });
 
   useEffect(() => {
     setSecondsLeft(initialTimeSeconds);
@@ -71,10 +68,10 @@ const Timer = ({
       </div>
       <ProgressBar progress={progress} />
       <div className="flex space-x-4 mt-4">
-        <Button onClick={handleStart} color="blue" disabled={btnDisabled}>
+        <Button onClick={handleStart} color="blue" disabled={secondsLeft === 0}>
           {isRunning ? "Pause" : "Start"}
         </Button>
-        <Button onClick={stopTimer} color="red" disabled={btnDisabled}>
+        <Button onClick={stopTimer} color="red" disabled={secondsLeft === 0}>
           Stop
         </Button>
         <Button onClick={stopTimer} color="yellow">
