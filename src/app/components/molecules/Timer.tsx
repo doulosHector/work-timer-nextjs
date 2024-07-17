@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import convertMinutesToHours from "@/app/utils/convertMinutesToHours";
 import Button from "../atoms/Button";
 import ProgressBar from "../atoms/ProgressBar";
+import { convertSecondsToHours } from "@/app/utils/convertSecondsToHours";
 
 const Timer = ({
   title,
@@ -17,40 +18,27 @@ const Timer = ({
   isRunning: boolean;
   setIsRunning: (isRunning: boolean) => void;
 }) => {
-  const { hours: initialHours, minutes: initialMinutes } =
-    convertMinutesToHours(initialTimeMinutes);
-  const [hours, setHours] = useState(0);
-  const [minutes, setMinutes] = useState(0);
-  const [seconds, setSeconds] = useState(0);
-  const [progress, setProgress] = useState(0);
-
-  const totalInitialTimeSeconds = initialHours * 60 + initialMinutes * 60;
-  const totalTimeSeconds = hours * 60 + minutes * 60 + seconds;
-  const btnDisabled = !(hours > 0 || minutes > 0 || seconds > 0);
-
-  useEffect(() => {
-    setHours(initialHours);
-    setMinutes(initialMinutes);
-  }, [initialHours, initialMinutes]);
+  const [secondsLeft, setSecondsLeft] = useState(0);
+  const { hours, minutes, seconds } = convertSecondsToHours(secondsLeft);
+  const initialTimeSeconds = initialTimeMinutes * 60;
+  const progress =
+    initialTimeSeconds > 0 && secondsLeft > 0
+      ? parseFloat((100 - (secondsLeft / initialTimeSeconds) * 100).toFixed(2))
+      : 0;
+  const btnDisabled = secondsLeft === 0;
+  console.clear();
+  console.log({ initialTimeSeconds, secondsLeft, progress });
 
   useEffect(() => {
-    setProgress(100 - (totalTimeSeconds / totalInitialTimeSeconds) * 100);
-  }, [totalInitialTimeSeconds, totalTimeSeconds]);
+    setSecondsLeft(initialTimeSeconds);
+  }, [initialTimeSeconds]);
 
   useEffect(() => {
     let interval: NodeJS.Timeout | null = null;
 
-    if (isRunning && (hours > 0 || minutes > 0 || seconds > 0)) {
+    if (isRunning && secondsLeft > 0) {
       interval = setInterval(() => {
-        if (seconds > 0) {
-          setSeconds(seconds - 1);
-        } else if (minutes > 0) {
-          setMinutes(minutes - 1);
-          setSeconds(59);
-        } else if (hours > 0) {
-          setHours(hours - 1);
-          setMinutes(59);
-        }
+        setSecondsLeft(secondsLeft - 1);
       }, 1000);
     } else if (!isRunning && interval !== null) {
       clearInterval(interval);
@@ -61,7 +49,7 @@ const Timer = ({
         clearInterval(interval);
       }
     };
-  }, [isRunning, hours, minutes, seconds]);
+  }, [isRunning, secondsLeft]);
 
   const handleStart = () => {
     setIsRunning(!isRunning);
@@ -69,9 +57,7 @@ const Timer = ({
 
   const stopTimer = () => {
     setIsRunning(false);
-    setSeconds(0);
-    setMinutes(initialMinutes);
-    setHours(initialHours);
+    setSecondsLeft(initialTimeMinutes * 60);
     setActiveTimer(title === "Work Time" ? "break" : "work");
   };
 
@@ -91,7 +77,7 @@ const Timer = ({
         <Button onClick={stopTimer} color="red" disabled={btnDisabled}>
           Stop
         </Button>
-        <Button onClick={stopTimer} color="yellow" disabled={btnDisabled}>
+        <Button onClick={stopTimer} color="yellow">
           Skip
         </Button>
       </div>
