@@ -72,7 +72,7 @@ const Timer = ({
           {isRunning ? "Pause" : "Start"}
         </Button>
         <Button onClick={stopTimer} color="red" disabled={secondsLeft === 0}>
-          Stop
+          Finish
         </Button>
         <Button onClick={stopTimer} color="yellow">
           Skip
