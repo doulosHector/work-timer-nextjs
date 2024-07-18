@@ -75,7 +75,10 @@ const Timer = ({
         <TimeDigits label="Minutes" time={minutes} />
         <TimeDigits label="Seconds" time={seconds} />
       </div>
-      <ProgressBar progress={countingMode === "down" ? progress : 100} />
+      <ProgressBar
+        progress={countingMode === "down" ? progress : 100}
+        color={countingMode === "down" ? "blue" : "green"}
+      />
       <div className="flex space-x-4 mt-4">
         <Button onClick={handleStart} color="blue" disabled={secondsLeft === 0}>
           {isRunning ? "Pause" : "Start"}
