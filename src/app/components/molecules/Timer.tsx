@@ -19,10 +19,11 @@ const Timer = ({
   setIsRunning: (isRunning: boolean) => void;
 }) => {
   const [secondsLeft, setSecondsLeft] = useState(0);
+  const [countingMode, setCountingMode] = useState<"down" | "up">("down");
   const { hours, minutes, seconds } = convertSecondsToHours(secondsLeft);
   const initialTimeSeconds = initialTimeMinutes * 60;
   const progress =
-    initialTimeSeconds > 0 && secondsLeft > 0
+    secondsLeft > 0
       ? parseFloat((100 - (secondsLeft / initialTimeSeconds) * 100).toFixed(2))
       : 0;
 
@@ -33,9 +34,16 @@ const Timer = ({
   useEffect(() => {
     let interval: NodeJS.Timeout | null = null;
 
-    if (isRunning && secondsLeft > 0) {
+    if (isRunning) {
+      if (secondsLeft === 0) {
+        setCountingMode("up");
+      }
       interval = setInterval(() => {
-        setSecondsLeft(secondsLeft - 1);
+        if (countingMode === "down") {
+          setSecondsLeft(secondsLeft - 1);
+        } else {
+          setSecondsLeft(secondsLeft + 1);
+        }
       }, 1000);
     } else if (!isRunning && interval !== null) {
       clearInterval(interval);
@@ -46,7 +54,7 @@ const Timer = ({
         clearInterval(interval);
       }
     };
-  }, [isRunning, secondsLeft]);
+  }, [isRunning, secondsLeft, countingMode]);
 
   const handleStart = () => {
     setIsRunning(!isRunning);
@@ -54,7 +62,8 @@ const Timer = ({
 
   const stopTimer = () => {
     setIsRunning(false);
-    setSecondsLeft(initialTimeMinutes * 60);
+    setSecondsLeft(initialTimeSeconds);
+    setCountingMode("down");
     setActiveTimer(title === "Work Time" ? "break" : "work");
   };
 
@@ -66,12 +75,12 @@ const Timer = ({
         <TimeDigits label="Minutes" time={minutes} />
         <TimeDigits label="Seconds" time={seconds} />
       </div>
-      <ProgressBar progress={progress} />
+      <ProgressBar progress={countingMode === "down" ? progress : 100} />
       <div className="flex space-x-4 mt-4">
         <Button onClick={handleStart} color="blue" disabled={secondsLeft === 0}>
           {isRunning ? "Pause" : "Start"}
         </Button>
-        <Button onClick={stopTimer} color="red" disabled={secondsLeft === 0}>
+        <Button onClick={stopTimer} color="green" disabled={!isRunning}>
           Finish
         </Button>
         <Button onClick={stopTimer} color="yellow">
