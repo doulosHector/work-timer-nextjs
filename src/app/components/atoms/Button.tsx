@@ -6,13 +6,14 @@ const Button = ({
 }: {
   onClick: () => void;
   children: React.ReactNode;
-  color: "blue" | "red" | "yellow";
+  color: "blue" | "red" | "yellow" | "green";
   disabled?: boolean;
 }) => {
   const styles = {
     blue: "bg-blue-600",
     red: "bg-red-600",
     yellow: "bg-yellow-600",
+    green: "bg-green-600",
   };
   return (
     <button
