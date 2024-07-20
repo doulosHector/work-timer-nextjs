@@ -11,12 +11,14 @@ const Timer = ({
   setActiveTimer,
   isRunning,
   setIsRunning,
+  trackSeconds,
 }: {
   title: string;
   initialTimeMinutes: number;
   setActiveTimer: (timer: "work" | "break") => void;
   isRunning: boolean;
   setIsRunning: (isRunning: boolean) => void;
+  trackSeconds?: (seconds: number) => void;
 }) => {
   const [secondsLeft, setSecondsLeft] = useState(0);
   const [countingMode, setCountingMode] = useState<"down" | "up">("down");
@@ -26,6 +28,7 @@ const Timer = ({
     secondsLeft > 0
       ? parseFloat((100 - (secondsLeft / initialTimeSeconds) * 100).toFixed(2))
       : 0;
+  const secondsElapsed = initialTimeSeconds - secondsLeft;
 
   useEffect(() => {
     setSecondsLeft(initialTimeSeconds);
@@ -65,6 +68,9 @@ const Timer = ({
     setSecondsLeft(initialTimeSeconds);
     setCountingMode("down");
     setActiveTimer(title === "Work Time" ? "break" : "work");
+    if (trackSeconds) {
+      trackSeconds(secondsElapsed);
+    }
   };
 
   return (
@@ -75,10 +81,7 @@ const Timer = ({
         <TimeDigits label="Minutes" time={minutes} />
         <TimeDigits label="Seconds" time={seconds} />
       </div>
-      <ProgressBar
-        progress={countingMode === "down" ? progress : 100}
-        color={countingMode === "down" ? "blue" : "green"}
-      />
+      <ProgressBar progress={countingMode === "down" ? progress : 100} />
       <div className="flex space-x-4 mt-4">
         <Button onClick={handleStart} color="blue" disabled={secondsLeft === 0}>
           {isRunning ? "Pause" : "Start"}

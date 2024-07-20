@@ -2,6 +2,7 @@
 import { useState } from "react";
 import Timer from "./components/molecules/Timer";
 import Settings from "./components/molecules/Settings";
+import TrackedTime from "./components/molecules/TrackedTime";
 
 export default function Home() {
   const [targetMinutes, setTargetMinutes] = useState(0);
@@ -9,6 +10,11 @@ export default function Home() {
   const [breakMinutes, setBreakMinutes] = useState(0);
   const [activeTimer, setActiveTimer] = useState<"work" | "break">("work");
   const [isRunning, setIsRunning] = useState(false);
+  const [trackedSeconds, setTrackedSeconds] = useState(0);
+
+  const trackSeconds = (seconds: number) => {
+    setTrackedSeconds((trackedSeconds) => trackedSeconds + seconds);
+  };
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
@@ -20,6 +26,7 @@ export default function Home() {
             setActiveTimer={setActiveTimer}
             isRunning={isRunning}
             setIsRunning={setIsRunning}
+            trackSeconds={trackSeconds}
           />
         ) : (
           <Timer
@@ -30,6 +37,10 @@ export default function Home() {
             setIsRunning={setIsRunning}
           />
         )}
+        <TrackedTime
+          trackedSeconds={trackedSeconds}
+          targetSeconds={targetMinutes * 60}
+        />
         <Settings
           targetMinutes={targetMinutes}
           setTargetMinutes={setTargetMinutes}
