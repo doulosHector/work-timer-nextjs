@@ -32,7 +32,7 @@ const RangeInput: React.FC<RangeInputProps> = ({
   return (
     <div className="flex flex-col items-center">
       <label className="text-sm text-gray-500" htmlFor={id}>
-        {label} : {formatTime(hours)}:{formatTime(minutes)}:00
+        {label} : {formatTime(hours, minutes, 0)}
       </label>
       <input
         id={id}

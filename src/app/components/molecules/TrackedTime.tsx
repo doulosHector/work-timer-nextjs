@@ -1,6 +1,6 @@
 import { convertSecondsToHours } from "@/app/utils/convertSecondsToHours";
-import { formatTime } from "@/app/utils/formatTime";
 import ProgressBar from "../atoms/ProgressBar";
+import { formatTime } from "@/app/utils/formatTime";
 
 const TrackedTime = ({
   trackedSeconds,
@@ -15,10 +15,7 @@ const TrackedTime = ({
     secondsQuotient && secondsQuotient < Infinity ? secondsQuotient * 100 : 0;
   return (
     <div>
-      <p>
-        Tracked time:{" "}
-        {`${formatTime(hours)}:${formatTime(minutes)}:${formatTime(seconds)}`}
-      </p>
+      <p>Tracked time: {formatTime(hours, minutes, seconds)}</p>
       <ProgressBar progress={progress} showPercentage={true} />
     </div>
   );
