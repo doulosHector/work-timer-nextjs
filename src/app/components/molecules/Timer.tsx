@@ -21,6 +21,7 @@ const Timer = ({
   trackSeconds?: (seconds: number) => void;
 }) => {
   const [secondsLeft, setSecondsLeft] = useState(0);
+  const [secondsElapsed, setSecondsElapsed] = useState(0);
   const [countingMode, setCountingMode] = useState<"down" | "up">("down");
   const { hours, minutes, seconds } = convertSecondsToHours(secondsLeft);
   const initialTimeSeconds = initialTimeMinutes * 60;
@@ -28,7 +29,6 @@ const Timer = ({
     secondsLeft > 0
       ? parseFloat((100 - (secondsLeft / initialTimeSeconds) * 100).toFixed(2))
       : 0;
-  const secondsElapsed = initialTimeSeconds - secondsLeft;
 
   useEffect(() => {
     setSecondsLeft(initialTimeSeconds);
@@ -43,10 +43,11 @@ const Timer = ({
       }
       interval = setInterval(() => {
         if (countingMode === "down") {
-          setSecondsLeft(secondsLeft - 1);
+          setSecondsLeft((prev) => prev - 1);
         } else {
-          setSecondsLeft(secondsLeft + 1);
+          setSecondsLeft((prev) => prev + 1);
         }
+        setSecondsElapsed((prev) => prev + 1);
       }, 1000);
     } else if (!isRunning && interval !== null) {
       clearInterval(interval);
@@ -71,6 +72,7 @@ const Timer = ({
     if (trackSeconds) {
       trackSeconds(secondsElapsed);
     }
+    setSecondsElapsed(0);
   };
 
   return (
