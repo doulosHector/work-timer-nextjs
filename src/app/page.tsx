@@ -18,6 +18,16 @@ export default function Home() {
     setTrackedSeconds((trackedSeconds) => trackedSeconds + seconds);
   };
 
+  const setSettings = (type: string, value: number) => {
+    if (type === "targetMinutes") {
+      setTargetMinutes(value);
+    } else if (type === "workMinutes") {
+      setWorkMinutes(value);
+    } else if (type === "breakMinutes") {
+      setBreakMinutes(value);
+    }
+  };
+
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
       <div className="flex flex-col items-center justify-center space-y-4">
@@ -46,11 +56,9 @@ export default function Home() {
         <TimeLeft secondsLeft={secondsLeft} />
         <Settings
           targetMinutes={targetMinutes}
-          setTargetMinutes={setTargetMinutes}
           workMinutes={workMinutes}
-          setWorkMinutes={setWorkMinutes}
           breakMinutes={breakMinutes}
-          setBreakMinutes={setBreakMinutes}
+          setSettings={setSettings}
           isRunning={isRunning}
         />
       </div>
