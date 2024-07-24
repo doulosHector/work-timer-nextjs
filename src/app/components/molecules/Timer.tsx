@@ -1,9 +1,9 @@
 import TimeDigits from "../atoms/TimeDigits";
 import { useState, useEffect } from "react";
-import convertMinutesToHours from "@/app/utils/convertMinutesToHours";
 import Button from "../atoms/Button";
 import ProgressBar from "../atoms/ProgressBar";
 import { convertSecondsToHours } from "@/app/utils/convertSecondsToHours";
+import { formatTime } from "@/app/utils/formatTime";
 
 const Timer = ({
   title,
@@ -29,6 +29,7 @@ const Timer = ({
     secondsLeft > 0
       ? parseFloat((100 - (secondsLeft / initialTimeSeconds) * 100).toFixed(2))
       : 0;
+  document.title = `${title} - ${formatTime(hours, minutes, seconds)}`;
 
   useEffect(() => {
     setSecondsLeft(initialTimeSeconds);
