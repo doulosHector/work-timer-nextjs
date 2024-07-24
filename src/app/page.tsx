@@ -3,6 +3,7 @@ import { useState } from "react";
 import Timer from "./components/molecules/Timer";
 import Settings from "./components/molecules/Settings";
 import TrackedTime from "./components/molecules/TrackedTime";
+import TimeLeft from "./components/molecules/TimeLeft";
 
 export default function Home() {
   const [targetMinutes, setTargetMinutes] = useState(0);
@@ -11,6 +12,7 @@ export default function Home() {
   const [activeTimer, setActiveTimer] = useState<"work" | "break">("work");
   const [isRunning, setIsRunning] = useState(false);
   const [trackedSeconds, setTrackedSeconds] = useState(0);
+  const secondsLeft = targetMinutes * 60 - trackedSeconds;
 
   const trackSeconds = (seconds: number) => {
     setTrackedSeconds((trackedSeconds) => trackedSeconds + seconds);
@@ -41,6 +43,7 @@ export default function Home() {
           trackedSeconds={trackedSeconds}
           targetSeconds={targetMinutes * 60}
         />
+        <TimeLeft secondsLeft={secondsLeft} />
         <Settings
           targetMinutes={targetMinutes}
           setTargetMinutes={setTargetMinutes}
