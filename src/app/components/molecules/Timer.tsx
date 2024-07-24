@@ -29,7 +29,9 @@ const Timer = ({
     secondsLeft > 0
       ? parseFloat((100 - (secondsLeft / initialTimeSeconds) * 100).toFixed(2))
       : 0;
-  document.title = `${title} - ${formatTime(hours, minutes, seconds)}`;
+  if (typeof window !== "undefined") {
+    document.title = `${title} - ${formatTime(hours, minutes, seconds)}`;
+  }
 
   useEffect(() => {
     setSecondsLeft(initialTimeSeconds);
