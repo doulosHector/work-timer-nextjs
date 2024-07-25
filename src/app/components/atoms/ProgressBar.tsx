@@ -6,7 +6,7 @@ const ProgressBar = ({
   showPercentage?: boolean;
 }) => {
   return (
-    <div className="w-full bg-gray-200 rounded-full h-3 dark:bg-gray-700 mt-4">
+    <div className="w-full bg-gray-200 rounded-full h-3 mt-4">
       <div
         className={`h-3 rounded-full transition-all duration-500 ${
           progress < 100 ? "bg-blue-600" : "bg-green-600"

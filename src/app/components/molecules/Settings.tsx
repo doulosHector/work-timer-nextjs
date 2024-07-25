@@ -40,7 +40,7 @@ const Settings = ({
 
   return (
     <div className="flex flex-col items-center mt-10 space-y-4">
-      <h2 className="text-2xl font-bold text-gray-800">Settings</h2>
+      <h2 className="text-2xl font-bold">Settings</h2>
       <RangeInput
         id="target-time"
         label="Target Time"

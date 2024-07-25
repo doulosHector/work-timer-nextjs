@@ -80,7 +80,7 @@ const Timer = ({
 
   return (
     <div className="flex flex-col items-center justify-center space-y-4">
-      <h1 className="text-4xl font-bold text-gray-800">{title}</h1>
+      <h1 className="text-4xl font-bold">{title}</h1>
       <div className="flex flex-grow space-x-4 w-72 justify-center">
         <TimeDigits label="Hours" time={hours} />
         <TimeDigits label="Minutes" time={minutes} />
@@ -94,7 +94,7 @@ const Timer = ({
         <Button onClick={stopTimer} color="green" disabled={!isRunning}>
           Finish
         </Button>
-        <Button onClick={stopTimer} color="yellow">
+        <Button onClick={stopTimer} color="orange">
           Skip
         </Button>
       </div>
