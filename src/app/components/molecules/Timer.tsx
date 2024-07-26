@@ -67,15 +67,24 @@ const Timer = ({
     setIsRunning(!isRunning);
   };
 
-  const stopTimer = () => {
+  const resetTimer = () => {
     setIsRunning(false);
     setSecondsLeft(initialTimeSeconds);
     setCountingMode("down");
-    setActiveTimer(title === "Work Time" ? "break" : "work");
+    setSecondsElapsed(0);
+  };
+
+  const handleFinish = () => {
     if (trackSeconds) {
       trackSeconds(secondsElapsed);
     }
-    setSecondsElapsed(0);
+    resetTimer();
+    setActiveTimer(title === "Work Time" ? "break" : "work");
+  };
+
+  const handleSkip = () => {
+    resetTimer();
+    setActiveTimer(title === "Work Time" ? "break" : "work");
   };
 
   return (
@@ -91,10 +100,10 @@ const Timer = ({
         <Button onClick={handleStart} color="blue" disabled={secondsLeft === 0}>
           {isRunning ? "Pause" : "Start"}
         </Button>
-        <Button onClick={stopTimer} color="green" disabled={!isRunning}>
+        <Button onClick={handleFinish} color="green" disabled={!isRunning}>
           Finish
         </Button>
-        <Button onClick={stopTimer} color="orange">
+        <Button onClick={handleSkip} color="orange">
           Skip
         </Button>
       </div>
