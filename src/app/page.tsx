@@ -1,9 +1,10 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Timer from "./components/molecules/Timer";
 import Settings from "./components/molecules/Settings";
 import TrackedTime from "./components/molecules/TrackedTime";
 import TimeLeft from "./components/molecules/TimeLeft";
+import { getItem, setItem } from "./utils/localStorage";
 
 export default function Home() {
   const [targetMinutes, setTargetMinutes] = useState(0);
@@ -13,9 +14,24 @@ export default function Home() {
   const [isRunning, setIsRunning] = useState(false);
   const [trackedSeconds, setTrackedSeconds] = useState(0);
   const secondsLeft = targetMinutes * 60 - trackedSeconds;
+  const date = new Date();
+  const day = date.getDay();
+
+  useEffect(() => {
+    const weekTrackedSeconds: number[] = JSON.parse(
+      getItem("weekTrackedSeconds") || "[]"
+    );
+    const todayTrackedSeconds = weekTrackedSeconds[day] || 0;
+    setTrackedSeconds(todayTrackedSeconds);
+  }, [day]);
 
   const trackSeconds = (seconds: number) => {
-    setTrackedSeconds((trackedSeconds) => trackedSeconds + seconds);
+    setTrackedSeconds(trackedSeconds + seconds);
+    const weekTrackedSeconds: number[] = JSON.parse(
+      getItem("weekTrackedSeconds") || "[]"
+    );
+    weekTrackedSeconds[day] = trackedSeconds + seconds;
+    setItem("weekTrackedSeconds", JSON.stringify(weekTrackedSeconds));
   };
 
   const setSettings = (type: string, value: number) => {
