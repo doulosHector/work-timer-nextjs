@@ -1,9 +1,10 @@
 import TimeDigits from "../atoms/TimeDigits";
-import { useState, useEffect } from "react";
+import { useState, useEffect, use } from "react";
 import Button from "../atoms/Button";
 import ProgressBar from "../atoms/ProgressBar";
 import { convertSecondsToHours } from "@/app/utils/convertSecondsToHours";
 import { formatTime } from "@/app/utils/formatTime";
+import useNotification from "@/hooks/useNotification";
 
 const Timer = ({
   title,
@@ -32,18 +33,30 @@ const Timer = ({
   if (typeof window !== "undefined") {
     document.title = `${title} - ${formatTime(hours, minutes, seconds)}`;
   }
+  const { sendNotification } = useNotification();
 
   useEffect(() => {
     setSecondsLeft(initialTimeSeconds);
   }, [initialTimeSeconds]);
 
   useEffect(() => {
+    if (isRunning) {
+      if (secondsLeft === 0) {
+        sendNotification("Timer Completed", `You finished your ${title}!`);
+        setCountingMode("up");
+      } else if (secondsLeft > 0 && secondsLeft % 300 === 0) {
+        sendNotification(
+          "Timer Alert",
+          `Five minutes elapsed since ended ${title}`
+        );
+      }
+    }
+  }, [isRunning, secondsLeft, title, sendNotification]);
+
+  useEffect(() => {
     let interval: NodeJS.Timeout | null = null;
 
     if (isRunning) {
-      if (secondsLeft === 0) {
-        setCountingMode("up");
-      }
       interval = setInterval(() => {
         if (countingMode === "down") {
           setSecondsLeft((prev) => prev - 1);
@@ -61,7 +74,7 @@ const Timer = ({
         clearInterval(interval);
       }
     };
-  }, [isRunning, secondsLeft, countingMode]);
+  }, [isRunning, countingMode]);
 
   const handleStart = () => {
     setIsRunning(!isRunning);
