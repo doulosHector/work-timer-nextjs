@@ -44,14 +44,18 @@ const Timer = ({
       if (secondsLeft === 0) {
         sendNotification("Timer Completed", `You finished your ${title}!`);
         setCountingMode("up");
-      } else if (secondsLeft > 0 && secondsLeft % 300 === 0) {
+      } else if (
+        secondsLeft > 0 &&
+        secondsLeft % 300 === 0 &&
+        countingMode === "up"
+      ) {
         sendNotification(
           "Timer Alert",
           `Five minutes elapsed since ended ${title}`
         );
       }
     }
-  }, [isRunning, secondsLeft, title, sendNotification]);
+  }, [isRunning, secondsLeft, title, sendNotification, countingMode]);
 
   useEffect(() => {
     let interval: NodeJS.Timeout | null = null;
