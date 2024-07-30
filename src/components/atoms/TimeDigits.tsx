@@ -1,4 +1,4 @@
-import { formatDigits } from "@/app/utils/formatTime";
+import { formatDigits } from "@/utils/formatTime";
 
 const TimeDigits = ({ label, time }: { label: string; time: number }) => {
   return (

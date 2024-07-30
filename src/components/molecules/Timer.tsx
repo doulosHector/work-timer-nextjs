@@ -1,9 +1,9 @@
 import TimeDigits from "../atoms/TimeDigits";
-import { useState, useEffect, use } from "react";
+import { useState, useEffect } from "react";
 import Button from "../atoms/Button";
 import ProgressBar from "../atoms/ProgressBar";
-import { convertSecondsToHours } from "@/app/utils/convertSecondsToHours";
-import { formatTime } from "@/app/utils/formatTime";
+import { convertSecondsToHours } from "@/utils/convertSecondsToHours";
+import { formatTime } from "@/utils/formatTime";
 import useNotification from "@/hooks/useNotification";
 
 const Timer = ({

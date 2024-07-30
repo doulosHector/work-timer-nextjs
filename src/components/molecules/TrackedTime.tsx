@@ -1,6 +1,6 @@
-import { convertSecondsToHours } from "@/app/utils/convertSecondsToHours";
+import { convertSecondsToHours } from "@/utils/convertSecondsToHours";
 import ProgressBar from "../atoms/ProgressBar";
-import { formatTime } from "@/app/utils/formatTime";
+import { formatTime } from "@/utils/formatTime";
 
 const TrackedTime = ({
   trackedSeconds,

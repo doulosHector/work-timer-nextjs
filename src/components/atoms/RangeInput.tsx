@@ -1,6 +1,5 @@
-import convertMinutes from "@/app/utils/convertMinutesToHours";
-import { formatTime } from "@/app/utils/formatTime";
-import React from "react";
+import convertMinutes from "@/utils/convertMinutesToHours";
+import { formatTime } from "@/utils/formatTime";
 
 interface RangeInputProps {
   id: string;

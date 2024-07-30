@@ -1,10 +1,10 @@
 "use client";
 import { useEffect, useState } from "react";
-import Timer from "./components/molecules/Timer";
-import Settings from "./components/molecules/Settings";
-import TrackedTime from "./components/molecules/TrackedTime";
-import TimeLeft from "./components/molecules/TimeLeft";
-import { getItem, setItem } from "./utils/localStorage";
+import Timer from "../components/molecules/Timer";
+import Settings from "../components/molecules/Settings";
+import TrackedTime from "../components/molecules/TrackedTime";
+import TimeLeft from "../components/molecules/TimeLeft";
+import { getItem, setItem } from "../utils/localStorage";
 
 export default function Home() {
   const [targetMinutes, setTargetMinutes] = useState(0);

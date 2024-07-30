@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import RangeInput from "../atoms/RangeInput";
-import { getItem, setItem } from "@/app/utils/localStorage";
+import { getItem, setItem } from "@/utils/localStorage";
 
 const Settings = ({
   targetMinutes,

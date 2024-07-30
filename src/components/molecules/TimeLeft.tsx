@@ -1,5 +1,5 @@
-import { convertSecondsToHours } from "@/app/utils/convertSecondsToHours";
-import { formatTime } from "@/app/utils/formatTime";
+import { convertSecondsToHours } from "@/utils/convertSecondsToHours";
+import { formatTime } from "@/utils/formatTime";
 
 interface Props {
   secondsLeft: number;
