@@ -1,10 +1,10 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Timer from "../components/molecules/Timer";
 import Settings from "../components/molecules/Settings";
 import TrackedTime from "../components/molecules/TrackedTime";
 import TimeLeft from "../components/molecules/TimeLeft";
-import { getItem, setItem } from "../utils/localStorage";
+import useWeekTrackedTime from "@/hooks/useWeekTrackedTime";
 
 export default function Home() {
   const [targetMinutes, setTargetMinutes] = useState(0);
@@ -12,27 +12,8 @@ export default function Home() {
   const [breakMinutes, setBreakMinutes] = useState(0);
   const [activeTimer, setActiveTimer] = useState<"work" | "break">("work");
   const [isRunning, setIsRunning] = useState(false);
-  const [trackedSeconds, setTrackedSeconds] = useState(0);
+  const { trackedSeconds, trackSeconds } = useWeekTrackedTime();
   const secondsLeft = targetMinutes * 60 - trackedSeconds;
-  const date = new Date();
-  const day = date.getDay();
-
-  useEffect(() => {
-    const weekTrackedSeconds: number[] = JSON.parse(
-      getItem("weekTrackedSeconds") || "[]"
-    );
-    const todayTrackedSeconds = weekTrackedSeconds[day] || 0;
-    setTrackedSeconds(todayTrackedSeconds);
-  }, [day]);
-
-  const trackSeconds = (seconds: number) => {
-    setTrackedSeconds(trackedSeconds + seconds);
-    const weekTrackedSeconds: number[] = JSON.parse(
-      getItem("weekTrackedSeconds") || "[]"
-    );
-    weekTrackedSeconds[day] = trackedSeconds + seconds;
-    setItem("weekTrackedSeconds", JSON.stringify(weekTrackedSeconds));
-  };
 
   const setSettings = (type: string, value: number) => {
     if (type === "targetMinutes") {
