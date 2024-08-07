@@ -5,6 +5,7 @@ import Settings from "../components/molecules/Settings";
 import TrackedTime from "../components/molecules/TrackedTime";
 import TimeLeft from "../components/molecules/TimeLeft";
 import useWeekTrackedTime from "@/hooks/useWeekTrackedTime";
+import WeeklyReport from "@/components/molecules/WeeklyReport";
 
 export default function Home() {
   const [targetMinutes, setTargetMinutes] = useState(0);
@@ -12,8 +13,14 @@ export default function Home() {
   const [breakMinutes, setBreakMinutes] = useState(0);
   const [activeTimer, setActiveTimer] = useState<"work" | "break">("work");
   const [isRunning, setIsRunning] = useState(false);
-  const { trackedSeconds, trackSeconds } = useWeekTrackedTime();
+  const [trackedSeconds, setTrackedSeconds] = useState(0);
+  const { trackTodaySeconds, weekTrackedSeconds } = useWeekTrackedTime();
   const secondsLeft = targetMinutes * 60 - trackedSeconds;
+
+  const trackSeconds = (seconds: number) => {
+    setTrackedSeconds(trackedSeconds + seconds);
+    trackTodaySeconds(trackedSeconds + seconds);
+  };
 
   const setSettings = (type: string, value: number) => {
     if (type === "targetMinutes") {
@@ -58,6 +65,7 @@ export default function Home() {
           setSettings={setSettings}
           isRunning={isRunning}
         />
+        <WeeklyReport weekTrackedSeconds={weekTrackedSeconds} />
       </div>
     </main>
   );

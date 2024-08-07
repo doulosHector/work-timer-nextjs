@@ -11,44 +11,37 @@ dayjs.extend(weekOfYear);
  * - Initializes and manages the state for tracked seconds.
  * - Checks if the current date is in a different week compared to the stored date.
  * - Resets the tracked time if the week has changed.
- * - Provides a function to update the tracked time.
+ * - Provides a function to update the tracked week time.
  *
  * Returns an object with the following properties:
- *   - trackedSeconds: The number of seconds tracked for the current day.
- *   - trackSeconds: A function to add seconds to the tracked time.
+ *   - trackSeconds: A function to add seconds to the tracked week time.
+ *   - weekTrackedSeconds: The number of seconds tracked for each day of the week.
  */
 const useWeekTrackedTime = () => {
-  const [trackedSeconds, setTrackedSeconds] = useState(0);
+  const [weekTrackedSeconds, setWeekTrackedSeconds] = useState<number[]>([]);
   const date = new Date();
   const day = date.getDay();
 
   useEffect(() => {
     const currentWeekOfYear = getItem("currentWeekOfYear");
-
+    // If the current week is different from the stored week, reset the week tracked seconds
     if (!currentWeekOfYear || currentWeekOfYear !== dayjs().week()) {
-      // Reset tracked time for the new week
-      const weekTrackedSeconds: number[] = new Array(7).fill(0);
-      setItem("weekTrackedSeconds", JSON.stringify(weekTrackedSeconds));
+      const weekSeconds: number[] = new Array(7).fill(0);
+      setItem("weekTrackedSeconds", JSON.stringify(weekSeconds));
       setItem("currentWeekOfYear", dayjs().week());
     }
-
-    const weekTrackedSeconds: number[] = JSON.parse(
-      getItem("weekTrackedSeconds") || "[]"
-    );
-    const todayTrackedSeconds = weekTrackedSeconds[day] || 0;
-    setTrackedSeconds(todayTrackedSeconds);
   }, [day]);
 
-  const trackSeconds = (seconds: number) => {
-    setTrackedSeconds(trackedSeconds + seconds);
-    const weekTrackedSeconds: number[] = JSON.parse(
+  const trackTodaySeconds = (seconds: number) => {
+    const weekSeconds: number[] = JSON.parse(
       getItem("weekTrackedSeconds") || "[]"
     );
-    weekTrackedSeconds[day] = trackedSeconds + seconds;
-    setItem("weekTrackedSeconds", JSON.stringify(weekTrackedSeconds));
+    weekSeconds[day] = seconds;
+    setItem("weekTrackedSeconds", JSON.stringify(weekSeconds));
+    setWeekTrackedSeconds(weekSeconds);
   };
 
-  return { trackedSeconds, trackSeconds };
+  return { trackTodaySeconds, weekTrackedSeconds };
 };
 
 export default useWeekTrackedTime;
