@@ -14,7 +14,11 @@ const ProgressBar = ({
         style={{ width: `${progress}%` }}
       ></div>
       {showPercentage && (
-        <p className="text-white text-center text-xs relative -top-3.5">
+        <p
+          className={`text-center font-bold text-xs relative -top-3.5 ${
+            progress < 100 ? "text-blue-600" : "text-green-600"
+          }`}
+        >
           {Math.round(progress)}%
         </p>
       )}

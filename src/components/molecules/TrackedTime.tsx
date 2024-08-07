@@ -16,7 +16,7 @@ const TrackedTime = ({
   return (
     <div>
       <p>Tracked time: {formatTime(hours, minutes, seconds)}</p>
-      <ProgressBar progress={progress} showPercentage={true} />
+      <ProgressBar progress={progress > 100 ? 100 : progress} showPercentage />
     </div>
   );
 };
