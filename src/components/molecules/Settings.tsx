@@ -45,7 +45,7 @@ const Settings = ({
         id="target-time"
         label="Target Time"
         min={0}
-        max={400}
+        max={480}
         step={5}
         value={targetMinutes}
         onChange={(e) => handleChange(e, "targetMinutes")}
@@ -53,9 +53,9 @@ const Settings = ({
       />
       <RangeInput
         id="work-time"
-        label="Work Time"
+        label="Work Session"
         min={0}
-        max={60}
+        max={120}
         step={5}
         value={workMinutes}
         onChange={(e) => handleChange(e, "workMinutes")}
@@ -63,7 +63,7 @@ const Settings = ({
       />
       <RangeInput
         id="break-time"
-        label="Break Time"
+        label="Break Session"
         min={0}
         max={60}
         step={5}

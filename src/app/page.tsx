@@ -37,7 +37,7 @@ export default function Home() {
       <div className="flex flex-col items-center justify-center space-y-4">
         {activeTimer === "work" ? (
           <Timer
-            title="Work Time"
+            title="Work Session"
             initialTimeMinutes={workMinutes}
             setActiveTimer={setActiveTimer}
             isRunning={isRunning}
@@ -46,7 +46,7 @@ export default function Home() {
           />
         ) : (
           <Timer
-            title="Break Time"
+            title="Break Session"
             initialTimeMinutes={breakMinutes}
             setActiveTimer={setActiveTimer}
             isRunning={isRunning}

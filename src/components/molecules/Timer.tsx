@@ -42,17 +42,14 @@ const Timer = ({
   useEffect(() => {
     if (isRunning) {
       if (secondsLeft === 0) {
-        sendNotification("Timer Completed", `You finished your ${title}!`);
+        sendNotification(`${title} completed!`);
         setCountingMode("up");
       } else if (
         secondsLeft > 0 &&
         secondsLeft % 300 === 0 &&
         countingMode === "up"
       ) {
-        sendNotification(
-          "Timer Alert",
-          `Five minutes elapsed since ended ${title}`
-        );
+        sendNotification(`Five minutes elapsed since ${title} ended`);
       }
     }
   }, [isRunning, secondsLeft, title, sendNotification, countingMode]);

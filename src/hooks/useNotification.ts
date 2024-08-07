@@ -10,7 +10,7 @@ const useNotification = () => {
     }
   }, []);
 
-  const sendNotification = (title: string, body: string) => {
+  const sendNotification = (title: string, body?: string) => {
     if (
       typeof window !== "undefined" &&
       Notification.permission === "granted"
