@@ -13,13 +13,12 @@ export default function Home() {
   const [breakMinutes, setBreakMinutes] = useState(0);
   const [activeTimer, setActiveTimer] = useState<"work" | "break">("work");
   const [isRunning, setIsRunning] = useState(false);
-  const [trackedSeconds, setTrackedSeconds] = useState(0);
-  const { trackTodaySeconds, weekTrackedSeconds } = useWeekTrackedTime();
-  const secondsLeft = targetMinutes * 60 - trackedSeconds;
+  const { todayTrackedSeconds, trackTodaySeconds, weekTrackedSeconds } =
+    useWeekTrackedTime();
+  const secondsLeft = targetMinutes * 60 - todayTrackedSeconds;
 
   const trackSeconds = (seconds: number) => {
-    setTrackedSeconds(trackedSeconds + seconds);
-    trackTodaySeconds(trackedSeconds + seconds);
+    trackTodaySeconds(seconds);
   };
 
   const setSettings = (type: string, value: number) => {
@@ -54,7 +53,7 @@ export default function Home() {
           />
         )}
         <TrackedTime
-          trackedSeconds={trackedSeconds}
+          trackedSeconds={todayTrackedSeconds}
           targetSeconds={targetMinutes * 60}
         />
         <TimeLeft secondsLeft={secondsLeft} />

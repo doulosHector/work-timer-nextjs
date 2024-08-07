@@ -21,6 +21,7 @@ const useWeekTrackedTime = () => {
   const [weekTrackedSeconds, setWeekTrackedSeconds] = useState<number[]>([]);
   const date = new Date();
   const day = date.getDay();
+  const todayTrackedSeconds = weekTrackedSeconds[day];
 
   useEffect(() => {
     const currentWeekOfYear = getItem("currentWeekOfYear");
@@ -29,6 +30,11 @@ const useWeekTrackedTime = () => {
       const weekSeconds: number[] = new Array(7).fill(0);
       setItem("weekTrackedSeconds", JSON.stringify(weekSeconds));
       setItem("currentWeekOfYear", dayjs().week());
+    } else {
+      const weekSeconds: number[] = JSON.parse(
+        getItem("weekTrackedSeconds") || "[]"
+      );
+      setWeekTrackedSeconds(weekSeconds);
     }
   }, [day]);
 
@@ -36,12 +42,12 @@ const useWeekTrackedTime = () => {
     const weekSeconds: number[] = JSON.parse(
       getItem("weekTrackedSeconds") || "[]"
     );
-    weekSeconds[day] = seconds;
+    weekSeconds[day] = todayTrackedSeconds + seconds;
     setItem("weekTrackedSeconds", JSON.stringify(weekSeconds));
     setWeekTrackedSeconds(weekSeconds);
   };
 
-  return { trackTodaySeconds, weekTrackedSeconds };
+  return { todayTrackedSeconds, trackTodaySeconds, weekTrackedSeconds };
 };
 
 export default useWeekTrackedTime;
