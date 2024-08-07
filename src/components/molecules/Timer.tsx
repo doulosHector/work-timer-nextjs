@@ -49,7 +49,10 @@ const Timer = ({
         secondsLeft % 300 === 0 &&
         countingMode === "up"
       ) {
-        sendNotification(`Five minutes elapsed since ${title} ended`);
+        sendNotification(
+          "Timer Alert",
+          `Five minutes elapsed since ${title} ended`
+        );
       }
     }
   }, [isRunning, secondsLeft, title, sendNotification, countingMode]);
