@@ -6,7 +6,9 @@ interface Props {
 }
 
 const TimeLeft = ({ secondsLeft }: Props) => {
-  const { hours, minutes, seconds } = convertSecondsToHours(secondsLeft);
+  const { hours, minutes, seconds } = convertSecondsToHours(
+    secondsLeft > 0 ? secondsLeft : 0
+  );
   return <p>Time left: {formatTime(hours, minutes, seconds)}</p>;
 };
 
