@@ -11,7 +11,7 @@ export default function Home() {
   const [targetMinutes, setTargetMinutes] = useState(0);
   const [workMinutes, setWorkMinutes] = useState(0);
   const [breakMinutes, setBreakMinutes] = useState(0);
-  const [activeTimer, setActiveTimer] = useState<"work" | "break">("work");
+  const [isWorkSession, setIsWorkSession] = useState(true);
   const [isRunning, setIsRunning] = useState(false);
   const { todayTrackedSeconds, trackTodaySeconds, weekTrackedSeconds } =
     useWeekTrackedTime();
@@ -34,24 +34,15 @@ export default function Home() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
       <div className="flex flex-col items-center justify-center space-y-4">
-        {activeTimer === "work" ? (
-          <Timer
-            title="Work Session"
-            initialTimeMinutes={workMinutes}
-            setActiveTimer={setActiveTimer}
-            isRunning={isRunning}
-            setIsRunning={setIsRunning}
-            trackSeconds={trackSeconds}
-          />
-        ) : (
-          <Timer
-            title="Break Session"
-            initialTimeMinutes={breakMinutes}
-            setActiveTimer={setActiveTimer}
-            isRunning={isRunning}
-            setIsRunning={setIsRunning}
-          />
-        )}
+        <Timer
+          title={isWorkSession ? "Work Session" : "Break Session"}
+          initialTimeMinutes={isWorkSession ? workMinutes : breakMinutes}
+          isWorkSession={isWorkSession}
+          setIsWorkSession={setIsWorkSession}
+          isRunning={isRunning}
+          setIsRunning={setIsRunning}
+          trackSeconds={isWorkSession ? trackSeconds : undefined}
+        />
         <TrackedTime
           trackedSeconds={todayTrackedSeconds}
           targetSeconds={targetMinutes * 60}

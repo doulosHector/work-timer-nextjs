@@ -6,21 +6,25 @@ import { convertSecondsToHours } from "@/utils/convertSecondsToHours";
 import { formatTime } from "@/utils/formatTime";
 import useNotification from "@/hooks/useNotification";
 
-const Timer = ({
-  title,
-  initialTimeMinutes,
-  setActiveTimer,
-  isRunning,
-  setIsRunning,
-  trackSeconds,
-}: {
+interface TimerProps {
   title: string;
   initialTimeMinutes: number;
-  setActiveTimer: (timer: "work" | "break") => void;
+  isWorkSession: boolean;
+  setIsWorkSession: (isWorkSession: boolean) => void;
   isRunning: boolean;
   setIsRunning: (isRunning: boolean) => void;
   trackSeconds?: (seconds: number) => void;
-}) => {
+}
+
+const Timer = ({
+  title,
+  initialTimeMinutes,
+  isWorkSession,
+  setIsWorkSession,
+  isRunning,
+  setIsRunning,
+  trackSeconds,
+}: TimerProps) => {
   const [secondsLeft, setSecondsLeft] = useState(0);
   const [secondsElapsed, setSecondsElapsed] = useState(0);
   const [countingMode, setCountingMode] = useState<"down" | "up">("down");
@@ -89,6 +93,7 @@ const Timer = ({
     setSecondsLeft(initialTimeSeconds);
     setCountingMode("down");
     setSecondsElapsed(0);
+    setIsWorkSession(!isWorkSession);
   };
 
   const handleFinish = () => {
@@ -96,12 +101,6 @@ const Timer = ({
       trackSeconds(secondsElapsed);
     }
     resetTimer();
-    setActiveTimer(title === "Work Time" ? "break" : "work");
-  };
-
-  const handleSkip = () => {
-    resetTimer();
-    setActiveTimer(title === "Work Time" ? "break" : "work");
   };
 
   return (
@@ -120,7 +119,7 @@ const Timer = ({
         <Button onClick={handleFinish} color="green" disabled={!isRunning}>
           Finish
         </Button>
-        <Button onClick={handleSkip} color="orange">
+        <Button onClick={resetTimer} color="orange">
           Skip
         </Button>
       </div>
