@@ -16,7 +16,7 @@ const ProgressBar = ({
       {showPercentage && (
         <p
           className={`text-center font-bold text-xs relative -top-3.5 ${
-            progress < 100 ? "text-blue-600" : "text-green-600"
+            progress < 50 ? "text-blue-600" : "text-white"
           }`}
         >
           {Math.round(progress)}%
